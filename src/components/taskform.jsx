@@ -1,29 +1,41 @@
 import React, { useState } from 'react'
 
-export default function taskform() {
-    let [task, setTask] = useState("");
-    let [priority, setPriority] = useState("Medium");
-    let [category, setCategory] = useState("General");
-    return ( 
-        <div>
-            <input onChange={(e) => setTask(e.target.value)}></input>
-            <h1>{task}</h1>
-            <h3>{priority}</h3>
-            <h3>{category}</h3>
-            <button>Submit</button>
-            <div>
-              <select onChange={(e) => setPriority(e.target.value)}>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Low">Low</option>
-            </select>
+export default function TaskForm({addTask}) {
+    const [task, setTask] = useState('');
+    const [priority, setPriority] = useState('Medium');
+    const [category, setCategory] = useState('General');
+    const handlesubmit =(e)=>{
+        e.preventDefault();
+        addTask({text: task, priority, category,completed: false}); //send data to addTask()
+        //Reset state
+        setPriority("Medium");
+        setCategory('General');
+        setTask("");
+    }
+  return (
+   <form onSubmit={handlesubmit}  className='task-form'>
+    <div id="inp">
+    <input type='text'
+    placeholder='Enter Your Task' 
+    required
+    value = {task}
+    onChange={(e)=> setTask(e.target.value)}/>
+    <span><button>Add Tasks</button></span>
+    </div>
 
-            <select onChange={(e) => setCategory(e.target.value)}>
-                <option value="General">General</option>
-                <option value="Work">Work</option>
-                <option value="Personal">Personal</option>
-            </select>
-            </div>
-        </div>
-    )
+    <div className='btns'>
+        <select value={priority} onChange={(e)=>setPriority(e.target.value)}>
+            <option>Medium</option>
+            <option>Low</option>
+            <option>High</option>
+        </select>
+
+        <select value={category} onChange={(e)=>setCategory(e.target.value)}>
+            <option>General</option>
+            <option>Work</option>
+            <option>Personal</option>
+        </select>
+    </div>
+   </form>
+  )
 }
